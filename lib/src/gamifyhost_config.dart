@@ -11,7 +11,7 @@ class GamifyHostConfig {
   final String apiUrl;
 
   /// URL where `widget.js` is hosted.
-  /// Defaults to `https://cdn.gamifyhost.com/widget.js`.
+  /// Defaults to `https://cdn.jsdelivr.net/npm/@gamifyhost/gamifyhost-widget/dist/widget.js`.
   final String widgetUrl;
 
   /// Initial point balance to display before the API responds.
@@ -21,7 +21,8 @@ class GamifyHostConfig {
     required this.publicKey,
     required this.userId,
     this.apiUrl = 'https://api.gamifyhost.com',
-    this.widgetUrl = 'https://cdn.gamifyhost.com/widget.js',
+    this.widgetUrl =
+        'https://cdn.jsdelivr.net/npm/@gamifyhost/gamifyhost-widget/dist/widget.js',
     this.initialBalance = 0,
   });
 
