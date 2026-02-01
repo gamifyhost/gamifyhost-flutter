@@ -1,11 +1,11 @@
 name: gamifyhost_games
 description: Flutter SDK for embedding GamifyHost game widgets. Renders the GamifyHost game experience (Neon Wheel, Cosmic Slots, Enigma Boxes, Leaderboard) inside your Flutter app via WebView.
 version: 1.0.0
-repository: https://github.com/gamifyhost/gamifyhost-flutter-sdk
+repository: https://github.com/gamifyhost/gamifyhost-flutter
 
 environment:
   sdk: ^3.10.7
-  flutter: ">=3.27.0"
+  flutter: '>=3.27.0'
 
 dependencies:
   flutter:
