@@ -12,7 +12,7 @@ void main() {
       expect(config.publicKey, 'pk_test_123');
       expect(config.userId, 'user_456');
       expect(config.apiUrl, 'https://api.gamifyhost.com');
-      expect(config.widgetUrl, 'https://cdn.gamifyhost.com/widget.js');
+      expect(config.widgetUrl, 'https://cdn.jsdelivr.net/npm/@gamifyhost/gamifyhost-widget/dist/widget.js');
       expect(config.initialBalance, 0);
     });
 
