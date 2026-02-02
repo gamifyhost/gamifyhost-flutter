@@ -12,6 +12,7 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'GamifyHost Example',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFD125F4),
@@ -54,9 +55,8 @@ class _GameScreenState extends State<GameScreen> {
       ),
       body: GamifyHostWidget(
         config: const GamifyHostConfig(
-          publicKey: 'pk_test_your_key_here',
+          publicKey: 'pk_test_2a57fe9d2a8c6be83f42b98d30117ece',
           userId: 'user_12345',
-          apiUrl: 'https://api.gamifyhost.com',
           initialBalance: 5000,
         ),
         controller: _controller,
