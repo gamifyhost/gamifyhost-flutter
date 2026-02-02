@@ -14,6 +14,7 @@
 /// ```
 library;
 
+export 'src/gamifyhost_api.dart';
 export 'src/gamifyhost_config.dart';
 export 'src/gamifyhost_controller.dart';
 export 'src/gamifyhost_widget.dart';

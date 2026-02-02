@@ -2,9 +2,18 @@
 
 Flutter SDK for embedding [GamifyHost](https://gamifyhost.com) game widgets in your app. Renders the full GamifyHost game experience — Neon Wheel, Cosmic Slots, Enigma Boxes, and Leaderboard — inside a WebView.
 
+## Screenshots
+
+<p align="center">
+  <img src="https://res.cloudinary.com/dm9s6bfd1/image/upload/v1769992943/Screenshot_20260202_002734_hvo8fv.png" width="300" alt="GamifyHost Home Screen" />
+  &nbsp;&nbsp;
+  <img src="https://res.cloudinary.com/dm9s6bfd1/image/upload/v1769992944/Screenshot_20260202_002708_q6lavw.png" width="300" alt="GamifyHost Game Screen" />
+</p>
+
 ## Features
 
 - Drop-in `GamifyHostWidget` that renders all GamifyHost games
+- `GamifyHostApi` client for calling public SDK endpoints (balance, leaderboard, play history)
 - `GamifyHostController` for programmatic reload and JS execution
 - Configurable API URL, widget CDN, and initial balance
 - Navigation filtering — only allows requests to your API and the widget CDN
@@ -113,35 +122,59 @@ await _controller.reloadWithConfig(
 
 ### GamifyHostConfig
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `publicKey` | `String` | **required** | Your GamifyHost public API key |
-| `userId` | `String` | **required** | The authenticated user's ID in your system |
-| `apiUrl` | `String` | `https://api.gamifyhost.com` | Base URL for the GamifyHost API |
-| `widgetUrl` | `String` | jsDelivr CDN | URL where `widget.js` is hosted |
-| `initialBalance` | `int` | `0` | Point balance shown before the API responds |
+| Parameter        | Type     | Default                      | Description                                 |
+| ---------------- | -------- | ---------------------------- | ------------------------------------------- |
+| `publicKey`      | `String` | **required**                 | Your GamifyHost public API key              |
+| `userId`         | `String` | **required**                 | The authenticated user's ID in your system  |
+| `apiUrl`         | `String` | `https://api.gamifyhost.com` | Base URL for the GamifyHost API             |
+| `widgetUrl`      | `String` | jsDelivr CDN                 | URL where `widget.js` is hosted             |
+| `initialBalance` | `int`    | `0`                          | Point balance shown before the API responds |
 
 ### GamifyHostWidget
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `config` | `GamifyHostConfig` | **required** | Widget configuration |
-| `controller` | `GamifyHostController?` | `null` | Optional controller for programmatic access |
-| `onReady` | `VoidCallback?` | `null` | Called when the widget finishes loading |
-| `onError` | `void Function(String)?` | `null` | Called on WebView load errors |
-| `backgroundColor` | `Color` | `Color(0xFF1F1022)` | Background shown while loading |
-| `showLoadingIndicator` | `bool` | `true` | Whether to show a spinner while loading |
-| `loadingIndicatorColor` | `Color?` | theme primary | Spinner color |
+| Parameter               | Type                     | Default             | Description                                 |
+| ----------------------- | ------------------------ | ------------------- | ------------------------------------------- |
+| `config`                | `GamifyHostConfig`       | **required**        | Widget configuration                        |
+| `controller`            | `GamifyHostController?`  | `null`              | Optional controller for programmatic access |
+| `onReady`               | `VoidCallback?`          | `null`              | Called when the widget finishes loading     |
+| `onError`               | `void Function(String)?` | `null`              | Called on WebView load errors               |
+| `backgroundColor`       | `Color`                  | `Color(0xFF1F1022)` | Background shown while loading              |
+| `showLoadingIndicator`  | `bool`                   | `true`              | Whether to show a spinner while loading     |
+| `loadingIndicatorColor` | `Color?`                 | theme primary       | Spinner color                               |
 
 ### GamifyHostController
 
-| Method | Description |
-|--------|-------------|
-| `reload()` | Reload the widget with current config |
-| `reloadWithConfig(config)` | Reload with a new config |
-| `runJavaScript(js)` | Execute JS inside the WebView |
-| `dispose()` | Clean up resources |
-| `isReady` | `ValueNotifier<bool>` — whether the widget has loaded |
+| Method                     | Description                                           |
+| -------------------------- | ----------------------------------------------------- |
+| `reload()`                 | Reload the widget with current config                 |
+| `reloadWithConfig(config)` | Reload with a new config                              |
+| `runJavaScript(js)`        | Execute JS inside the WebView                         |
+| `dispose()`                | Clean up resources                                    |
+| `isReady`                  | `ValueNotifier<bool>` — whether the widget has loaded |
+
+### GamifyHostApi
+
+HTTP client for the public SDK endpoints. Authenticates with your public key via the `X-API-Key` header.
+
+```dart
+final api = GamifyHostApi(config: GamifyHostConfig(
+  publicKey: 'pk_live_abc123',
+  userId: 'user_12345',
+));
+
+final balance = await api.getUserBalance();
+print(balance.totalPoints);
+
+api.dispose();
+```
+
+| Method                                 | Endpoint                            | Returns                               |
+| -------------------------------------- | ----------------------------------- | ------------------------------------- |
+| `getGames()`                           | `GET /v1/games`                     | `List<GameInfo>`                      |
+| `getGameConfig(gameType)`              | `GET /v1/games/:gameType/config`    | `GameConfig`                          |
+| `getUserBalance({userId?})`            | `GET /v1/users/:userId/sdk-balance` | `UserBalance`                         |
+| `getLeaderboard({page, limit})`        | `GET /v1/leaderboard`               | `PaginatedResponse<LeaderboardEntry>` |
+| `getUserPlays({userId?, page, limit})` | `GET /v1/users/:userId/plays`       | `PaginatedResponse<PlayRecord>`       |
 
 ## License
 
